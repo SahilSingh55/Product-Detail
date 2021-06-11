@@ -1,25 +1,60 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// import './App.css';
+import classes from './App.module.css';
+import ProductData from './Utils/ProductData';
+import ProductDetails from './ProductDetails/ProductDetails';
+import ProductPreview from './ProductPreview/ProductPreview';
+import Topbar from './Topbar/Topbar';
+
+class App extends Component {
+  state = {
+    productData: ProductData,
+    currentPreviewImagePos: 0,
+    currentSelectedFeature: 0, 
+  }
+
+  onColorOptionClick = (pos) => {
+    this.setState({currentPreviewImagePos: pos});
+  }
+
+  onFeatureItemClick =(pos) => {
+    this.setState({currentSelectedFeature: pos});
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // console.log('Next State => ', nextState);
+    // console.log('Current State => ', this.state);
+
+    // console.log('Inside ShouldComponentUpdate');
+    if(nextState.currentPreviewImagePos === this.state.currentPreviewImagePos) {
+      return false;
+    }
+
+    return true;
+  }
+
+  render() {
+    // console.log('Rendering AppJs');
+    return (
+      <div className="App">
+        <Topbar />
+        
+        <div className={classes.MainContainer}>
+          <div className={classes.ProductPreview}>
+            <ProductPreview currentPreviewImage={this.state.productData.colorOptions[this.state.currentPreviewImagePos].imageUrl} 
+            currentSelectedFeature={this.state.currentSelectedFeature} />
+          </div>
+  
+          <div className={classes.ProductData}>
+            <ProductDetails data={this.state.productData} onColorOptionClick={this.onColorOptionClick} 
+            currentPreviewImagePos={this.state.currentPreviewImagePos} onFeatureItemClick={this.onFeatureItemClick} 
+            currentSelectedFeature={this.state.currentSelectedFeature} />
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
