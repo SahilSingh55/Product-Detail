@@ -35,7 +35,7 @@ class App extends Component {
   }
 
   render() {
-    console.log('Rendering AppJs');
+    // console.log('Rendering AppJs');
     return (
       <div className="App">
         <Topbar />
